@@ -1,0 +1,30 @@
+version: '3'
+services:
+  # MySQL Service
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_senha
+      MYSQL_DATABASE: todo_db
+      MYSQL_USER: seu_usuario
+      MYSQL_PASSWORD: sua_senha
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  # Nest.js App Service
+  nest-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
